@@ -1,0 +1,245 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{hyperref}
+\usepackage{lipsum}
+\usepackage[margin=2.2cm]{geometry}
+
+\title{Theory Assignment-1: ADA Winter-2024}
+\author{Adarsh Jha (2022024) \and Akshat Kothari (2022052)}
+
+\date{28 January 2024}
+\begin{document}
+
+\maketitle
+
+\section{Preprocessing}
+The value of $k$
+\begin{itemize}
+    \item If \(k < \frac{n}{10}\) and \(n < 100\), use brute force.
+    \item If \(k > \frac{3}{2} \times n\), or not. If yes use Function {count\_greater\_or\_equal} else use {count\_smaller\_or\_equal}
+\end{itemize}
+
+\section{Algorithm Description}
+This algorithm aims to find the $k$-th smallest element in the union of three sorted arrays $A$, $B$, and $C$. The algorithm uses a binary search strategy along with two helper functions to efficiently locate the desired element.
+
+\section{Recurrence Relation}
+
+The recurrence relation for the algorithm is given by:
+
+\[
+T\left(\frac{n}{r}\right) = T\left(\frac{n}{2}\right) + O(\log((\text{max} - \text{min})/r)) + O(\log n)
+\]
+
+Where:
+\begin{itemize}
+    \item \ Initially r is 1
+    \item \( T\left(\frac{n}{r}\right) \) is the time complexity of the algorithm for a problem of size \( \frac{n}{r} \).
+    \item \( T\left(\frac{n}{2}\right) \) represents the recursive calls on subproblems of size \( \frac{n}{2} \).
+    \item \( O(\log((\text{max} - \text{min})/r)) \) is the time complexity of binary search-like operations within each recursive call, dependent on the range \((\text{max} - \text{min})\).
+    \item \( O(\log n) \) accounts for finding the targeted element.
+\end{itemize}
+
+\section{Complexity Analysis}
+
+\subsection{Time Complexity}
+
+\subsubsection{Recursive Calls}
+
+The algorithm makes recursive calls with a problem size reduced by a factor of 2 (\(T\left(\frac{n}{2}\right)\)). This contributes \(\log n\) recursive levels.
+
+\subsubsection{Binary Search-Like Operations}
+
+The term \(O(\log((\text{max} - \text{min})/r))\) represents the time complexity of binary search-like operations within each recursive call. This depends on the range \((\text{max} - \text{min})\) and contributes \(\log(\text{max} - \text{min})\) operations.
+
+\textbf{Overall Time Complexity:} Combining the recursive calls and binary search-like operations, the overall time complexity is \(O(\log n \cdot \log(\text{max} - \text{min}))\).
+
+\subsection{Space Complexity}
+
+\subsubsection{Recursive Call Stack}
+
+The algorithm involves recursive calls, and the space complexity is influenced by the maximum depth of the recursion. In this case, it is \(O(\log n)\) + \(O(\log(\text{max} - \text{min}))\).
+
+\subsubsection{Additional Data Structures}
+
+The space complexity is also influenced by any additional data structures used. In the provided algorithm, the space requirements are minimal, and the overall space complexity is \(O(\log n)\).
+
+\textbf{Conclusion:} The time complexity is \(O(\log n \cdot \log(\text{max} - \text{min}))\), and the space complexity is \(O(\log n)\) + \(O(\log(\text{max} - \text{min}))\). These complexities provide an understanding of how the algorithm's performance scales with input size and characteristics.
+
+
+
+
+
+
+\section{Proof of Correctness}
+
+\subsection{Base Case}
+
+If the size of arrays $A$, $B$, and $C$ is small \(k < \frac{n}{10}\) and \(n < 100\), the algorithm resorts to a brute-force approach to find the $k$-th smallest element. This approach is correct by definition, as it iterates through the three arrays and returns the $k$-th element.
+
+\subsection{Binary Search}
+
+The algorithm employs a binary search strategy to efficiently locate the $k$-th smallest element. This strategy is justified by the fact that the arrays $A$, $B$, and $C$ are sorted, allowing for logarithmic time complexity.
+
+\subsection{Counting Functions}
+
+The \texttt{count\_smaller\_or\_equal} and \texttt{count\_greater\_or\_equal} functions accurately count the number of elements less than or equal to, or greater than or equal to, a specified target in a sorted array. The correctness of these functions is crucial for the accurate calculation of the total count of elements in the union.
+
+\subsection{Specialized Counting for Efficiency}
+
+When $k$ is significantly larger than the size of the arrays ($k > 1.5 \times (\text{{len}}(A))$), the algorithm uses specialized counting to efficiently determine the count of elements.
+\subsection{PROOFS}
+Click \href{https://rb.gy/kmkffz}{here} to visualize.
+
+Click \href{https://rb.gy/djvg8p}{here} to visualize in python tutor.
+
+Click \href{https://colab.research.google.com/drive/1TYO-ctS_yVKtta_lZzQUwnzjg9aVDQJq?usp=sharing}{here} to see the code in python in comparison with linear time complexity.
+
+Click \href{https://github.com/ad4-rush/ADA-Assignment-1.git}{here} to see github repo.
+\section{Assumptions}
+
+
+In the implementation of the algorithm, several minor assumptions are made to ensure the clarity and correctness of the solution. These assumptions do not contradict the initial conditions stated in the question:
+
+\begin{enumerate}
+    \item \textbf{Indexing Convention:} The algorithm assumes the default indexing convention where array indices start from 1 to \(3n\), as mentioned in the question. The implementation aligns with the specified convention. 
+    
+    \textit{i.e.} For getting smallest element , k should be 1.
+
+    \item \textbf{Sorted Arrays:} The arrays \(A\), \(B\), and \(C\) are assumed to be sorted initially. This assumption is crucial for the correctness of the binary search and counting functions. The algorithm does not check or enforce the sorted property explicitly.
+
+    \item \textbf{Efficiency Condition:} The algorithm assumes that all the arthmetic operation takes constant time. The algorithm utilizes a specialized counting approach when \(k\) is significantly larger than the size of the arrays (\(k > 1.5 \times \text{{len}}(A)\)). This assumes that the specialized counting approach provides efficiency gains for larger values of \(k\).
+
+    \item \textbf{Positive Elements:} The algorithm assumes that all elements in arrays \(A\), \(B\), and \(C\) are positive. This assumption is important, as the expression \(\text{{int mid = (low + high) / 2}}\) in the algorithm relies on positive values to calculate the midpoint correctly.
+
+    \item \textbf{Duplicate Elements:} The algorithm assumes that duplicate elements are allowed in arrays \(A\), \(B\), and \(C\). This means that the same value may appear multiple times in an array, and the algorithm is designed to handle such cases appropriately. The presence of duplicate elements does not affect the correctness of the algorithm.
+
+    \item \textbf{Data Type:} When implementing the algorithm in C++, it is assumed that all numbers in the arrays \(A\), \(B\), and \(C\) are of integer data type. The algorithm relies on integer arithmetic for its calculations, and using non-integer types may result in unexpected behavior.
+
+    \item \textbf{Array Size Comparison:} The algorithm checks whether \(3 \times \text{{len}}(A) < k\) to determine if the given \(k\) is larger than three times the size of the arrays. If true, the algorithm prints a message indicating that \(k\) is greater than 3 times the array size and returns \texttt{None}. This assumes that for such cases, a different approach or handling may be required.
+    Also if k is less than n then max is set to maximum of \(A[k]\), \(B[k]\) and \(C[k]\).
+    It also assumes that k is a positive integer. If k is given negative then the algo will return the minimum element the union, it will be same as giving k as 1.
+
+    \item \textbf{Brute-Force Threshold:} The threshold for resorting to a brute-force approach is set at a size of 33 for the arrays. This threshold is assumed to be reasonable for balancing the overhead of the brute-force approach against the potential efficiency gains of the binary search for larger array sizes.
+\end{enumerate}
+
+These assumptions collectively contribute to the proper functioning of the algorithm while aligning with the conditions set by the question.
+
+
+\section{Pseudo code}
+\begin{center}
+\Huge On next PAGE
+\end{center}
+
+\vfill
+
+\begin{algorithm}
+\caption{Your Algorithm}
+\begin{algorithmic}[1]
+
+    \Function{count\_smaller\_or\_equal}{arr, target}
+        \State count $\gets$ 0
+        \State left, right $\gets$ 0, $\text{len(arr)} - 1$
+        \While{left $\leq$ right}
+            \State mid $\gets$ (left + right) // 2
+            \If{arr[mid] $\leq$ target}
+                \State count $\gets$ mid + 1
+                \State left $\gets$ mid + 1
+            \Else
+                \State right $\gets$ mid - 1
+            \EndIf
+        \EndWhile
+        \State \Return count
+    \EndFunction
+
+    \Function{count\_greater\_or\_equal}{arr, target}
+        \State count $\gets$ 0
+        \State left, right $\gets$ 0, $\text{len(arr)} - 1$
+        \While{left $\leq$ right}
+            \State mid $\gets$ (left + right) // 2
+            \If{arr[mid] $\geq$ target}
+                \State count $\gets$ count + right - mid + 1
+                \State right $\gets$ mid - 1
+            \Else
+                \State left $\gets$ mid + 1
+            \EndIf
+        \EndWhile
+        \State \Return count
+    \EndFunction
+
+    \Function{brute\_force\_kth\_smallest\_element}{a, b, c, k}
+        \State a\_pointer, b\_pointer, c\_pointer $\gets$ 0, 0, 0
+        \While{true}
+            \If{a[a\_pointer] $\leq$ b[b\_pointer] and a[a\_pointer] $\leq$ c[c\_pointer]}
+                \State a\_pointer $\gets$ a\_pointer + 1
+                \If{a\_pointer + b\_pointer + c\_pointer $\geq$ k}
+                    \State \Return a[a\_pointer - 1]
+                \EndIf
+            \ElsIf{a[a\_pointer] $\geq$ b[b\_pointer] and b[b\_pointer] $\leq$ c[c\_pointer]}
+                \State b\_pointer $\gets$ b\_pointer + 1
+                \If{a\_pointer + b\_pointer + c\_pointer $\geq$ k}
+                    \State \Return b[b\_pointer - 1]
+                \EndIf
+            \ElsIf{a[a\_pointer] $\geq$ c[c\_pointer] and b[b\_pointer] $\geq$ c[c\_pointer]}
+                \State c\_pointer $\gets$ c\_pointer + 1
+                \If{a\_pointer + b\_pointer + c\_pointer $\geq$ k}
+                    \State \Return c[c\_pointer - 1]
+                \EndIf
+            \EndIf
+        \EndWhile
+    \EndFunction
+    
+\end{algorithmic}
+\end{algorithm}
+%\section{Main Functions}
+\begin{algorithm}
+\caption{Your Algorithm}
+\begin{algorithmic}[1]
+\Function{kthSmallestElement}{$A, B, C, k$}
+        \State $last \gets -1$
+        \If{$\text{len}(A) \times 3 < k$}
+            \State \textbf{print}("K is greater than $3 \times n$")
+            \State \textbf{return} \textbf{None}
+        \EndIf
+        \If{$\text{len}(A) > k$}
+            \State $last \gets k$
+        \EndIf
+        \If{$k < \frac{\text{len}(A)}{10}$ \textbf{and} $\text{len}(A) < 100$}
+            \State \textbf{return} \Call{bruteForceKthSmallestElement}{$A, B, C, k$}
+        \EndIf
+        \State $low \gets \min(A[0], B[0], C[0])$
+        \State $high \gets \max(A[last], B[last], C[last])$
+        \If{$k > 1.5 \times \text{len}(A)$}
+            \While{$low < high$}
+                \State $mid \gets \frac{low + high}{2}$
+                \State $countA \gets$ \Call{countGreaterOrEqual}{$A, mid$}
+                \State $countB \gets$ \Call{countGreaterOrEqual}{$B, mid$}
+                \State $countC \gets$ \Call{countGreaterOrEqual}{$C, mid$}
+                \State $totalCount \gets \text{len}(A) \times 3 - (countA + countB + countC) + 1$
+                \If{$totalCount < k$}
+                    \State $low \gets mid + 1$
+                \Else
+                    \State $high \gets mid$
+                \EndIf
+            \EndWhile
+            \State \textbf{return} $low$
+        \EndIf
+        \While{$low < high$}
+            \State $mid \gets \frac{low + high}{2}$
+            \State $countA \gets$ \Call{countSmallerOrEqual}{$A, mid$}
+            \State $countB \gets$ \Call{countSmallerOrEqual}{$B, mid$}
+            \State $countC \gets$ \Call{countSmallerOrEqual}{$C, mid$}
+            \State $totalCount \gets countA + countB + countC$
+            \If{$totalCount < k$}
+                \State $low \gets mid + 1$
+            \Else
+                \State $high \gets mid$
+            \EndIf
+        \EndWhile
+        \State \textbf{return} $low$
+    \EndFunction
+\end{algorithmic}
+\end{algorithm}
+\end{document}
